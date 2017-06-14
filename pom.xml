@@ -16,6 +16,31 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+ <repositories>
+    <repository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -25,11 +50,31 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
-    </dependencies>
+     <dependency>
+  	<groupId>org.wildfly.swarm</groupId>
+  <artifactId>jaxrs-weld</artifactId>
+  <version>${version.wildfly-swarm}</version>
+</dependency>
+<dependency>
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>jpa</artifactId>
+  <version>${version.wildfly-swarm}</version>
+</dependency>
+<dependency>
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>ejb</artifactId>
+  <version>${version.wildfly-swarm}</version>
+</dependency>
+<dependency>
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>hibernate-validator</artifactId>
+  <version>${version.wildfly-swarm}</version>
+</dependency>
+</dependencies>
   </dependencyManagement>
 
   <build>
-    <finalName>demo</finalName>
+    <finalName>raspberry-wildfly-swarm-demo</finalName>
     <plugins>
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
@@ -56,6 +101,15 @@
       <scope>provided</scope>
     </dependency>
     <!-- WildFly Swarm Fractions -->
-    
+    <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+	</dependency>
+	
+	<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <version>1.4.196</version>
+	</dependency>	
   </dependencies>
 </project>
