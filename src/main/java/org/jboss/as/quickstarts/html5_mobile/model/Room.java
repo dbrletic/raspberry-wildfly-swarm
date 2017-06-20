@@ -35,7 +35,6 @@ public class Room {
     private String roomDesc;
 
     @NotNull
-    @Size(min = 2, max = 20, message = "1-20 Numbers")
     @Column(name = "room_occupancy")
     private int roomOccupancy;
 
@@ -47,11 +46,11 @@ public class Room {
         this.id = id;
     }
 
-    public String getRoom() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoom(String roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 

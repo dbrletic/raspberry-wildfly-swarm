@@ -23,7 +23,7 @@ public class RoomRegistration {
     private Event<Room> roomEventSrc;
 
     public void register(Room room) throws Exception {
-        log.info("Registering " + room.getId() + ": " + room.getRoomDesc());
+        log.info("Registering: " + room.getRoomId() + ": " + room.getRoomDesc());
         em.persist(room);
         roomEventSrc.fire(room);
     }
