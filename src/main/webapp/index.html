@@ -87,7 +87,12 @@
                 updateMemberTable();
             });
 
-            //Register an event listener on the submit action
+            $("#room-art").on("pagebeforeshow", function() {
+                // Fetches the initial member data and populates the table using lodash templates
+                updateRoomTable();
+            });
+            
+            //Register an event listener on the submit action for Member
             $('#reg').submit(function(event) {
                 event.preventDefault();
 
@@ -96,8 +101,27 @@
                 registerMember(memberData);
             });
 
+          //Register an event listener on the submit action for Room
+            $('#reg-room').submit(function(event) {
+                event.preventDefault();
+
+                var roomData = $(this).serializeObject();
+
+                registerRoom(roomData);
+            });
+
             //Register the cancel listener
             $('#cancel').click(function(event) {
+                //clear input fields
+                $('#reg')[0].reset();
+
+                //clear existing msgs
+                $('span.invalid').remove();
+                $('span.success').remove();
+            });
+
+          //Register the cancel listener
+            $('#cancel-room').click(function(event) {
                 //clear input fields
                 $('#reg')[0].reset();
 
@@ -219,6 +243,43 @@
                     </div>
                 </div>
             </article>
+            
+            <!-- New HTML5 article tag -->
+            <article id="register-room" data-role="page" data-title="Add a Room">
+                <!-- Header -->
+                <div data-role="header" class="header">
+                    <h3>HTML5 Quickstart</h3>
+                </div>
+                <!-- /Header -->
+
+                <div class="ui-content" role="main">
+                    <div class="wrap">
+                        <!-- For now mapping bean validation constraints from server side model is a manual task -->
+                        <form name="reg" id="reg-room" data-ajax="false">
+                            <fieldset>
+                                <legend>Register a Room:</legend>
+                                <div class="ui-field-contain">
+                                    <label for="room">Room Name:</label>
+                                    <input type="text" name="roomId" id="roomId" placeholder="Room Name" required autofocus/>
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="roomDesc">Room Description:</label>
+                                    <input type="text" name="roomDesc" id="roomDesc" placeholder="Room Desc" required/>
+                                </div>
+                                <div class="ui-field-contain">
+                                    <label for="roomOccupancy">Room Max Occupancy #:</label>
+                                    <input type="text" name="roomOccupancy" id="roomOccupancy" placeholder="Room Max Occupancy" required/>
+                                </div>
+                                <div id="formMsgs"></div>
+                                <div class="ui-grid-a app-responsive">
+                                    <div class="ui-block-a"><input type="submit" id="register-room" value="Register" data-theme="b"/></div>
+                                    <div class="ui-block-b"><input type="button" id="cancel-room" name="cancel" value="Reset"/></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </article>
 
             <!-- New HTML5 article tag -->
             <article id="member-art" data-role="page" data-title="List Members">
@@ -263,6 +324,48 @@
                 </div>
             </article>
 
+			  <!-- New HTML5 article tag -->
+            <article id="room-art" data-role="page" data-title="List Rooms">
+                <!-- Header -->
+                <div data-role="header" class="header" data-position="fixed">
+                    <h3>HTML5 Quickstart</h3>
+                </div>
+                <!-- /Header -->
+
+                <div class="ui-content" role="main">
+                    <div class="wrap">
+                        <button id="refreshButton" data-role="button" data-inline="true" data-icon="refresh">Refresh Rooms</button>
+                        <table data-role="table" id="rooms-table" data-mode="reflow" class="app-responsive table-stroke">
+                            <thead>
+                                <tr>
+                                    <th data-priority="1">Id</th>
+                                    <th data-priority="persist">Room</th>
+                                    <th data-priority="2">Room Description</th>
+                                    <th data-priority="3">Max Occupancy </th>
+                                    <th data-priority="4">REST URL</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rooms">
+                            <!-- This is where the list of members gets populated by the templates. This row is only
+                                here as an example of the code that will be inserted.
+                            <tr>
+                                <th>0</td>
+                                <td>John Smith</td>
+                                <td><a href="mailto:john.smith@mailinator.com" class="ui-link">john.smith@mailinator.com</a></td>
+                                <td><a href="tel:2125551212" class="ui-link">Call</a> or <a href="sms:2125551212" class="ui-link">SMS</a> 2125551212</td>
+                                <td><a href="rest/members/0" rel="external" target="_blank" class="resturl ui-link">JSON</a></td>
+                            </tr>
+                            -->
+                            </tbody>
+                        </table>
+                        <div class="member-foot">
+                            <!-- Sets the JAX-RS URLs to retrieve all members either as XML or JSON data.-->
+                            REST URL for all members:
+                            <a href="rest/rooms" target="_blank" rel="external">JSON</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
             <!-- Footer -->
             <div data-role="footer" data-tap-toggle="false" data-position="fixed" data-theme="a">
                 <div data-role="navbar">
@@ -270,13 +373,26 @@
                         <li><a href="#intro-art" data-icon="home" class="ui-btn-active">Home</a></li>
                         <li><a href="#register-art" data-icon="plus">Add a Member</a></li>
                         <li><a href="#member-art" data-icon="grid">List Members</a></li>
+                        <li><a href="#register-room" data-icon="plus">Add Room</a></li>
+                        <li><a href="#room-art" data-icon="grid">List Rooms</a></li>
                     </ul>
                 </div>
             </div>
             <!-- /Footer -->
         </section>
     </div>
-    <script type="text/template" id="member-tmpl">
+    <script type="text/template" id="room-tmpl">
+        <% _.each(rooms, function(room) { %>
+        <tr>
+            <th><%=room.id%></td>
+            <td><%=room.room%></td>
+            <td><%=room.roomDesc%></td>
+            <td><%=room.roomOccupancy%></td>
+			<td><a href="rest/rooms/<%=room.id%>" rel="external" target="_blank" class="resturl ui-link">JSON</a></td>
+        </tr>
+        <% }); %>
+    </script>
+     <script type="text/template" id="member-tmpl">
         <% _.each(members, function(member) { %>
         <tr>
             <th><%=member.id%></td>
