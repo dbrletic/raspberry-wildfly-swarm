@@ -9,15 +9,16 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.wildfly.swarm>2017.6.0</version.wildfly.swarm>
+    <version.wildfly.swarm>2017.10.1</version.wildfly.swarm>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.mysql>5.1.38</version.mysql>
   </properties>
 
  <repositories>
-    <repository>
+   <!--   <repository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -38,6 +39,17 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </repository> -->
+     <repository>
+      <id>central-public-repository-group</id>
+      <name>Central Repository</name>
+      <url>http://central.maven.org/maven2/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
   </repositories>
   
@@ -47,33 +59,56 @@
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>bom-all</artifactId>
         <version>${version.wildfly.swarm}</version>
-        <scope>import</scope>
         <type>pom</type>
       </dependency>
      <dependency>
   	<groupId>org.wildfly.swarm</groupId>
   <artifactId>jaxrs-weld</artifactId>
   <version>${version.wildfly-swarm}</version>
-</dependency>
-<dependency>
+ </dependency>
+ <dependency>
   <groupId>org.wildfly.swarm</groupId>
   <artifactId>jpa</artifactId>
   <version>${version.wildfly-swarm}</version>
-</dependency>
-<dependency>
+ </dependency>
+ <dependency>
   <groupId>org.wildfly.swarm</groupId>
   <artifactId>ejb</artifactId>
   <version>${version.wildfly-swarm}</version>
-</dependency>
-<dependency>
+ </dependency>
+ <dependency>
   <groupId>org.wildfly.swarm</groupId>
-  <artifactId>hibernate-validator</artifactId>
-  <version>${version.wildfly-swarm}</version>
+  <artifactId>wildfly-swarm-hibernate-validator</artifactId>
+  <version>1.0.0.Alpha5</version>
 </dependency>
+ <dependency>
+    <groupId>org.hibernate.javax.persistence</groupId>
+    <artifactId>hibernate-jpa-2.1-api</artifactId>
+    <version>1.0.0.Final</version>
+</dependency>
+	<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-entitymanager</artifactId>
+    <version>${version.wildfly-swarm}</version>
+ </dependency>
+ <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>jaxrs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>datasources</artifactId>
+    </dependency>
 </dependencies>
   </dependencyManagement>
 
   <build>
+  	<resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <finalName>raspberry-wildfly-swarm-demo</finalName>
     <plugins>
       <plugin>
@@ -102,13 +137,19 @@
     </dependency>
     <!-- WildFly Swarm Fractions -->
     <dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-validator</artifactId>
+    	<groupId>org.hibernate</groupId>
+   	    <artifactId>hibernate-validator</artifactId>
+    	<version>4.2.0.Final</version>
 	</dependency>
-	
 	<dependency>
+  		 <groupId>mysql</groupId>
+  		 <artifactId>mysql-connector-java</artifactId>
+ 		 <version>${version.mysql}</version>
+ 		 <scope>compile</scope>
+	</dependency>
+	<!--  <dependency>
     <groupId>com.h2database</groupId>
     <artifactId>h2</artifactId>
-    </dependency>	
+    </dependency>	-->
   </dependencies>
 </project>

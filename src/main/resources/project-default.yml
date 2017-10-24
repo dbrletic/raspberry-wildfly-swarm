@@ -1,0 +1,13 @@
+ swarm:
+  datasources:
+    jdbc-drivers:
+      com.mysql:
+        driver-class-name: com.mysql.jdbc.Driver
+        xa-datasource-class-name: com.mysql.jdbc.jdbc2.optional.MysqlXADataSource
+        driver-module-name: com.mysql
+    data-sources:
+      ExampleDS:
+        driver-name: com.mysql
+        connection-url: jdbc:mysql://echin3.no-ip.org:3306/leftover_pi;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        user-name: leftoverpiuser
+        password: supersecuremysqlpassword
